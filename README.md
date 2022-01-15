@@ -19,6 +19,10 @@ Supports Alfred 3 and Alfred 4 on macOS 10.7+ (Python 2.7).
 
 Simply type `coin` to get the current price of favorite coins.
 
+<div style="text-align:center">
+  <img src="docs/screenshot_coin.png" width="512px" alt="workflow screenshot">
+</div>
+
 `coin list` shows the current price of the top 10 coins by market cap.
 
 `coin [TICKER]` shows the current price of the coin with that ticker.

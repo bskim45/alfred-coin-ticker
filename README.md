@@ -1,4 +1,10 @@
-# alfred-coin-ticker
+<h1 align="center">
+  <a href="https://github.com/bskim45/alfred-coin-ticker" title="Coin Ticker for Alfred Workflow">
+    <img alt="icon" src="https://raw.githubusercontent.com/bskim45/alfred-coin-ticker/main/icon.png" width="128px" />
+  </a>
+  <br />
+  Coin Ticker for Alfred Workflow
+</h1>
 
 An [Alfred Workflow](http://www.alfredapp.com/) that provides current price 
 and status about cryptocurrency from [cryptocompare.com].

@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "alfred-coin-ticker"
+version = "1.0.0"
+description = ""
+authors = ["Bumsoo Kim <bskim45@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "~2.7"
+
+[tool.poetry.dev-dependencies]
+mock = "~3.0.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,60 @@
+{
+  "Response": "Success",
+  "Message": "Coin list succesfully returned!",
+  "Data": {
+    "ETH": {
+      "Id": "7605",
+      "Url": "/coins/eth/overview",
+      "ImageUrl": "/media/37746238/eth.png",
+      "ContentCreatedOn": 1438259812,
+      "Name": "ETH",
+      "Symbol": "ETH",
+      "CoinName": "Ethereum",
+      "FullName": "Ethereum (ETH)",
+      "Description": "Ethereum is a decentralized platform that runs smart contracts (applications that run exactly as programmed without any possibility of downtime, censorship, fraud or third party interference). In the Ethereum protocol and blockchain, there is a price for each operation. In order to have anything transferred or executed by the network, you have to consume or burn Gas. Ethereum’s native cryptocurrency is Ether (ETH) and it is used to pay for computation time and transaction fees.The introductory whitepaper was originally published in 2013 by Vitalik Buterin, the founder of Ethereum, the project was crowdfunded during August 2014 by fans all around the world and launched in 2015. Ethereum is developed and maintained by ETHDEV with contributions from minds across the globe. There is an Ecosystem Support Program which is a branch of the Ethereum Foundation focused on supporting projects and entities within the greater Ethereum community to promote the success and growth of the ecosystem. Multiple startups work with the Ethereum blockchain covering areas in: DeFi, NFTs, Ethereum Name Service, Wallets, Scaling, etc.The launch of Ethereum is a process divided into 4 main phases: Frontier, Homestead, Metropolis and Serenity.Ethereum 2.0, also known as Serenity, is the final phase of Ethereum, it aims to solve the decentralized scaling challenge. A naive way to solve Ethereum&#39;s problems would be to make it more centralized. But decentralization is too important, as it gives Ethereum censorship resistance, openness, data privacy and near-unbreakable security.The Eth2 upgrades will make Ethereum scalable, secure, and decentralized. Sharding will make Ethereum more scalable by increasing transactions per second while decreasing the power needed to run a node and validate the chain. The beacon chain will make Ethereum secure by coordinating validators across shards. And staking will lower the barrier to participation, creating a larger – more decentralized – network.The beacon chain will also introduce proof-of-stake to Ethereum. Ethereum is moving to the proof-of-stake (PoS) consensus mechanism from proof-of-work (PoW). This was always the plan as it&#39;s a key part of the community&#39;s strategy to scale Ethereum via the Eth2 upgrades. However, getting PoS right is a big technical challenge and not as straightforward as using PoW to reach consensus across the networkKeep up with Ethereum upgradesFor ETH holders and Dapp users, this has no impact whatsoever, however, for users wishing to get involved, there are ways to participate in Ethereum and future Eth2-related efforts. Get involved in Eth 2.0Blockchain data provided by: Etherchain (Main Source), Blockchair (Backup), and Etherscan (Total Supply only).",
+      "AssetTokenStatus": "Finished",
+      "Algorithm": "Ethash",
+      "ProofType": "PoW",
+      "SortOrder": "2",
+      "Sponsored": false,
+      "Taxonomy": {
+        "Access": "Permissionless",
+        "FCA": "Exchange,Utility",
+        "FINMA": "Payment,Utility",
+        "Industry": "Blockchain-Specific Application",
+        "CollateralizedAsset": "No",
+        "CollateralizedAssetType": "",
+        "CollateralType": "",
+        "CollateralInfo": ""
+      },
+      "Rating": {
+        "Weiss": {
+          "Rating": "B+",
+          "TechnologyAdoptionRating": "A-",
+          "MarketPerformanceRating": "D+"
+        }
+      },
+      "IsTrading": true,
+      "TotalCoinsMined": 118350847.124,
+      "CirculatingSupply": 118350847.124,
+      "BlockNumber": 14005293,
+      "NetHashesPerSecond": 978486875237131.1,
+      "BlockReward": 2.2069459192390055,
+      "BlockTime": 13.363234172387491,
+      "AssetLaunchDate": "2015-07-30",
+      "AssetWhitepaperUrl": "https://www.cryptocompare.com/media/37745821/ethereum.pdf",
+      "AssetWebsiteUrl": "https://www.ethereum.org/",
+      "MaxSupply": -1,
+      "MktCapPenalty": 0,
+      "IsUsedInDefi": 0,
+      "IsUsedInNft": 0,
+      "PlatformType": "blockchain",
+      "DecimalPoints": 18,
+      "AlgorithmType": "ethash",
+      "Difficulty": 12376118580074384
+    }
+  },
+  "RateLimit": {},
+  "HasWarning": false,
+  "Type": 100
+}

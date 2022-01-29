@@ -1,0 +1,20 @@
+{
+  "skip": {},
+  "bumpFiles": [
+    {
+      "filename": "version",
+      "type": "plain-text"
+    }
+  ],
+  "packageFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "scripts": {
+    "postbump": "sed -i.bak \"s#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(cat version)</string>#\" info.plist",
+    "precommit": "git add info.plist"
+
+  }
+}

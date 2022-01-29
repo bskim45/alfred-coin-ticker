@@ -30,3 +30,19 @@ bump_version:
 	@(read -e -p "Bump to version $(version)? [y/N]: " ans && case "$$ans" in [yY]) true;; *) false;; esac)
 	@echo $(version) > version
 	@sed -i.bak 's#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(version)</string>#' info.plist
+
+.PHONY: release
+release:
+	@standard-version -a -s -t ""
+
+.PHONY: release-major
+release-major:
+	@standard-version -a -s -t "" --release-as major
+
+.PHONY: release-minor
+release-minor:
+	@standard-version -a -s -t "" --release-as minor
+
+.PHONY: release-patch
+release-patch:
+	@standard-version -a -s -t "" --release-as patch

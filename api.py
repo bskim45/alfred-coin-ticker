@@ -217,5 +217,10 @@ class CoinMarketCapClient(TickClient):
     @classmethod
     def get_coin_web_url(cls, coin_name):
         return '{0}/currencies/{1}/'.format(
-            cls.WEB_BASE_URL, coin_name.lower()
+            cls.WEB_BASE_URL, cls.normalize_to_underscore(coin_name.lower())
         )
+
+    @staticmethod
+    def normalize_to_underscore(name):
+        # type: (unicode) -> unicode
+        return name.replace('.', '-').replace(' ', '-')

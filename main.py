@@ -180,7 +180,7 @@ def add_ticks_to_workflow(wf, ticks):
     )
 
     for tick in ticks:
-        wf.add_item(
+        item = wf.add_item(
             title='{ticker:<5}\t{fiat}{price:10}\t({change_pct}%) \t{symbol} {volume}'.format(
                 # noqa
                 ticker=tick.ticker, fiat=tick.fiat_symbol, price=tick.price,
@@ -198,6 +198,9 @@ def add_ticks_to_workflow(wf, ticks):
             valid=True,
             icon=coin_image_path_map[tick.ticker],
         )
+        item.add_modifier('cmd', 'Copy ticker price',
+                          arg=tick.price.replace(',', ''))
+        item.add_modifier('alt', 'Copy ticker', arg=tick.ticker)
 
     return len(ticks) > 0
 

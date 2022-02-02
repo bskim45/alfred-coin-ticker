@@ -6,7 +6,7 @@
   Coin Ticker for Alfred Workflow
 </h1>
 
-An [Alfred Workflow](http://www.alfredapp.com/) that provides current price 
+An [Alfred Workflow](http://www.alfredapp.com/) that provides the current price 
 and status about cryptocurrency from [cryptocompare.com].
 
 Supports Alfred 3 and Alfred 4 on macOS 10.7+ (Python 2.7).
@@ -24,6 +24,10 @@ Simply type `coin` to get the current price of favorite coins.
 </div>
 
 `coin list` shows the current price of the top 10 coins by market cap.
+
+- Press `Enter ⏎` to open associated `coinmarketcap.com` website.
+- Press `⌘ ⏎` to copy the current price to the clipboard.
+- Press `⌥ ⏎` to copy current ticker (ex. `BTC`) to the clipboard.
 
 `coin [TICKER]` shows the current price of the coin with that ticker.
 

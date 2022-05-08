@@ -1,12 +1,14 @@
 [tool.poetry]
 name = "alfred-coin-ticker"
-version = "1.0.0"
+version = "1.1.0"
 description = ""
 authors = ["Bumsoo Kim <bskim45@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "~2.7"
+python = "~3.8"
+requests = "^2.27.1"
+alfred-workflow = {git = "https://github.com/NorthIsUp/alfred-workflow-py3", rev = "master"}
 
 [tool.poetry.dev-dependencies]
 mock = "~3.0.5"
@@ -14,3 +16,20 @@ mock = "~3.0.5"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.black]
+line-length = 79
+skip-string-normalization = true
+
+[tool.pytest.ini_options]
+addopts = "-p no:warnings"
+
+[tool.coverage.run]
+parallel = true
+omit = [
+  "tests/*",
+]

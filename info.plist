@@ -80,7 +80,7 @@
 				<key>runningsubtext</key>
 				<string>fetching...</string>
 				<key>script</key>
-				<string>python main.py {query}</string>
+				<string>/usr/bin/env python3 main.py {query}</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>

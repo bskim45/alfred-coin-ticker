@@ -6,7 +6,7 @@
   Coin Ticker for Alfred Workflow
 </h1>
 
-An [Alfred Workflow](http://www.alfredapp.com/) that provides the current price 
+An [Alfred Workflow](http://www.alfredapp.com/) that provides the current price
 and status about cryptocurrency from [cryptocompare.com].
 
 Supports Alfred 3 and Alfred 4 on macOS 10.7+ (Python 2.7).
@@ -52,8 +52,8 @@ Please use with caution.
 
 The code is released under the MIT license. See [LICENSE](LICENSE) for details.
 
-Awesome [alfred-workflow](https://github.com/deanishe/alfred-workflow) library 
-by [@deanishe](https://github.com/deanishe) is also released under 
+Awesome [alfred-workflow](https://github.com/deanishe/alfred-workflow) library
+by [@deanishe](https://github.com/deanishe) is also released under
 [MIT License](alfred-workflow/LICENCE.txt).
 
 [cryptocompare.com]: https://www.cryptocompare.com/

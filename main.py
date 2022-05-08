@@ -1,50 +1,70 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 #
 # Copyright (c) 2022 Bumsoo Kim <bskim45@gmail.com>
 #
 # MIT Licence http://opensource.org/licenses/MIT
 
-from __future__ import print_function, unicode_literals, division
+from __future__ import annotations
 
 import multiprocessing
 import sys
 from multiprocessing.pool import ThreadPool
 
-from api import CryptoCompareClient, CoinTick, CoinInfo, CoinMarketCapClient
-from utils import create_workflow, cached_file, get_display_change_string, \
-    cached_file_fresh
-from workflow import Workflow3, ICON_INFO, ICON_WEB, web, \
-    ICON_SETTINGS, ICON_ERROR, ICON_TRASH
+import requests
+from workflow import (
+    ICON_ERROR,
+    ICON_INFO,
+    ICON_SETTINGS,
+    ICON_TRASH,
+    ICON_WEB,
+    Workflow3,
+)
+
+from api import CoinInfo, CoinMarketCapClient, CoinTick, CryptoCompareClient
+from utils import (
+    cached_file,
+    cached_file_fresh,
+    create_workflow,
+    get_display_change_string,
+)
 
 TICKER_CACHE_AGE_SECONDS = 14 * 24 * 60 * 60  # 2 weeks
 
 
 class Command(object):
-    def __init__(self, command_id, alfred_command, help_message, icon=None):
-        # type: (unicode, unicode, unicode, unicode) -> Command
+    def __init__(
+        self,
+        command_id: str,
+        alfred_command: str,
+        help_message: str,
+        icon: str = None,
+    ):
         self.command_id = command_id
         self.alfred_command = alfred_command
         self.help_message = help_message
         self.icon = icon
 
-    def is_command(self, command):
-        # type: (unicode) -> bool
+    def is_command(self, command: str) -> bool:
         return command == self.alfred_command
 
 
 CMD_LIST_FAVORITES = Command('list_favorites', '', 'List favorite coins.')
-CMD_LIST_RANKINGS = Command('list_rankings', 'list',
-                            'Toplist by Market Cap.')
-CMD_SET_CURRENCY = Command('set_currency', 'set currency', 'Set currency',
-                           ICON_SETTINGS)
+CMD_LIST_RANKINGS = Command('list_rankings', 'list', 'Toplist by Market Cap.')
+CMD_SET_CURRENCY = Command(
+    'set_currency', 'set currency', 'Set currency', ICON_SETTINGS
+)
 CMD_HELP = Command('show_help', 'help', 'Show help', ICON_INFO)
-CMD_RESET = Command('reset', 'reset',
-                    'Reset all settings and delete all caches/data.',
-                    ICON_TRASH)
+CMD_RESET = Command(
+    'reset',
+    'reset',
+    'Reset all settings and delete all caches/data.',
+    ICON_TRASH,
+)
 CMD_ADD_COIN = Command('add_coin', 'add', 'Add new coin to the favorites.')
-CMD_REMOVE_COIN = Command('remove_coin', 'remove',
-                          'Remove a coin from the favorites.')
+CMD_REMOVE_COIN = Command(
+    'remove_coin', 'remove', 'Remove a coin from the favorites.'
+)
 
 COMMAND_LIST = [
     CMD_LIST_FAVORITES,
@@ -91,10 +111,10 @@ def get_coin_infos_multi(tickers):
 
 
 def get_coin_image_multi(ticker_and_image_urls):
-    # type: (list[tuple[unicode, unicode]]) -> list[tuple[unicode, str]]  # noqa
+    # type: (list[tuple[str, str]]) -> list[tuple[str, str]]  # noqa
     def get_image(ticker_and_image_url):
         ticker, image_url = ticker_and_image_url
-        return ticker, web.get(image_url).content
+        return ticker, requests.get(image_url).content
 
     pool = ThreadPool(multiprocessing.cpu_count() // 2)
     ticker_and_images = pool.map(get_image, ticker_and_image_urls)
@@ -102,13 +122,13 @@ def get_coin_image_multi(ticker_and_image_urls):
 
 
 def get_coin_info_from_tickers(wf, tickers):
-    # type: (Workflow3, list[unicode]) -> dict[unicode, CoinInfo]  # noqa
+    # type: (Workflow3, list[str]) -> dict[str, CoinInfo]  # noqa
 
     ticker_map = {}
     unknown_tickers = []
 
-    def get_cache_key(ticker):
-        return '{0}_info'.format(ticker.lower()).encode('utf-8')
+    def get_cache_key(ticker) -> str:
+        return '{0}_info'.format(ticker.lower())
 
     for ticker in tickers:
         is_cached = wf.cached_data_fresh(
@@ -116,8 +136,9 @@ def get_coin_info_from_tickers(wf, tickers):
         )  # type: CoinInfo
 
         if is_cached:
-            ticker_info = wf.cached_data(get_cache_key(ticker), None,
-                                         TICKER_CACHE_AGE_SECONDS)
+            ticker_info = wf.cached_data(
+                get_cache_key(ticker), None, TICKER_CACHE_AGE_SECONDS
+            )
             ticker_map[ticker] = ticker_info
         else:
             unknown_tickers.append(ticker)
@@ -127,42 +148,48 @@ def get_coin_info_from_tickers(wf, tickers):
     for ticker_info in unknown_coin_info_list:
         # replace web link to coinmarketcap
         ticker_info = ticker_info._replace(  # noqa
-            url=CoinMarketCapClient.get_coin_web_url(
-                ticker_info.name.lower())
+            url=CoinMarketCapClient.get_coin_web_url(ticker_info.name.lower())
         )
-        wf.cached_data(get_cache_key(ticker_info.ticker), lambda: ticker_info,
-                       TICKER_CACHE_AGE_SECONDS)
+        wf.cached_data(
+            get_cache_key(ticker_info.ticker),
+            lambda: ticker_info,
+            TICKER_CACHE_AGE_SECONDS,
+        )
         ticker_map[ticker_info.ticker] = ticker_info
 
     return ticker_map
 
 
 def get_coin_image_from_tickers(wf, ticker_and_image_list):
-    # type: (Workflow3, list[tuple[unicode, unicode]]) -> dict[unicode, unicode]  # noqa
+    # type: (Workflow3, list[tuple[str, str]]) -> dict[str, str]  # noqa
 
     ticker_image_path_map = {}
     unknown_ticker_and_image_urls = []
 
     def get_cache_key(ticker):
-        return '{0}_image'.format(ticker.lower()).encode('utf-8')
+        return '{0}_image'.format(ticker.lower())
 
     for ticker, image_url in ticker_and_image_list:
-        is_cached = cached_file_fresh(wf, get_cache_key(ticker),
-                                      TICKER_CACHE_AGE_SECONDS)
+        is_cached = cached_file_fresh(
+            wf, get_cache_key(ticker), TICKER_CACHE_AGE_SECONDS
+        )
 
         if is_cached:
-            image_path = cached_file(wf, get_cache_key(ticker), None,
-                                     TICKER_CACHE_AGE_SECONDS)
+            image_path = cached_file(
+                wf, get_cache_key(ticker), None, TICKER_CACHE_AGE_SECONDS
+            )
             ticker_image_path_map[ticker] = image_path
         else:
             unknown_ticker_and_image_urls.append((ticker, image_url))
 
     unknown_ticker_image_list = get_coin_image_multi(
-        unknown_ticker_and_image_urls)
+        unknown_ticker_and_image_urls
+    )
 
     for ticker, image in unknown_ticker_image_list:
-        image_path = cached_file(wf, get_cache_key(ticker), lambda: image,
-                                 TICKER_CACHE_AGE_SECONDS)
+        image_path = cached_file(
+            wf, get_cache_key(ticker), lambda: image, TICKER_CACHE_AGE_SECONDS
+        )
         ticker_image_path_map[ticker] = image_path
 
     return ticker_image_path_map
@@ -181,25 +208,29 @@ def add_ticks_to_workflow(wf, ticks):
 
     for tick in ticks:
         item = wf.add_item(
-            title='{ticker:<5}\t{fiat}{price:10}\t({change_pct}%) \t{symbol} {volume}'.format(
-                # noqa
-                ticker=tick.ticker, fiat=tick.fiat_symbol, price=tick.price,
+            title='{ticker:<5}\t{fiat}{price:10}\t({change_pct}%) \t{symbol} {volume}'.format(  # noqa pylint: disable=line-too-long
+                ticker=tick.ticker,
+                fiat=tick.fiat_symbol,
+                price=tick.price,
                 change_pct=get_display_change_string(
-                    tick.price_change_24h_percent),
+                    tick.price_change_24h_percent
+                ),
                 symbol=tick.symbol,
                 volume=tick.total_volume_24h,
             ),
             subtitle='24h High {0}{1} | Low {0}{2}  | Change {3}'.format(
                 tick.fiat_symbol,
-                tick.price_24h_high, tick.price_24h_low,
+                tick.price_24h_high,
+                tick.price_24h_low,
                 get_display_change_string(tick.price_change_24h),
             ),
             arg=coin_info_map[tick.ticker].url,
             valid=True,
             icon=coin_image_path_map[tick.ticker],
         )
-        item.add_modifier('cmd', 'Copy ticker price',
-                          arg=tick.price.replace(',', ''))
+        item.add_modifier(
+            'cmd', 'Copy ticker price', arg=tick.price.replace(',', '')
+        )
         item.add_modifier('alt', 'Copy ticker', arg=tick.ticker)
 
     return len(ticks) > 0
@@ -216,12 +247,14 @@ def list_rankings(wf):
 
     add_ticks_to_workflow(
         wf,
-        wf.cached_data(b'market_cap_rankings_10', _get, max_age=3, session=True)
+        wf.cached_data(
+            'market_cap_rankings_10', _get, max_age=3, session=True
+        ),
     )
 
 
 def list_tickers(wf, tickers):
-    # type: (Workflow3, list[unicode]) -> ()  # noqa
+    # type: (Workflow3, list[str]) -> ()  # noqa
     if not tickers:
         return
 
@@ -233,8 +266,12 @@ def list_tickers(wf, tickers):
 
     is_not_empty = add_ticks_to_workflow(
         wf,
-        wf.cached_data(b'tickers_{0}'.format('_'.join(tickers)), _get,
-                       max_age=3, session=True),
+        wf.cached_data(
+            'tickers_{0}'.format('_'.join(tickers)),
+            _get,
+            max_age=3,
+            session=True,
+        ),
     )
 
     return is_not_empty
@@ -284,10 +321,10 @@ def show_add_favorites_help(wf):
 
 
 def add_favorites_prompt(wf, ticker, position_str=None):
-    # type: (Workflow3, unicode, Optional[unicode]) -> ()  # noqa
+    # type: (Workflow3, str, Optional[str]) -> ()  # noqa
 
     ticker = ticker.upper()
-    favorites = wf.settings['favorites']  # type: list[unicode]  # noqa
+    favorites = wf.settings['favorites']  # type: list[str]  # noqa
 
     if ticker in favorites:
         wf.add_item(
@@ -307,26 +344,26 @@ def add_favorites_prompt(wf, ticker, position_str=None):
         if position:
             wf.add_item(
                 title="Add '{0}' to the favorites at position {1}.".format(
-                    ticker, position),
+                    ticker, position
+                ),
                 subtitle='press ENTER to proceed',
                 autocomplete='add_commit {0} {1}'.format(ticker, position),
                 icon=ICON_INFO,
             )
         else:
             wf.add_item(
-                title="Add '{0}' to the end of the favorites.".format(
-                    ticker, position),
+                title="Add '{0}' to the end of the favorites.".format(ticker),
                 subtitle='press ENTER to proceed',
-                autocomplete='add_commit {0}'.format(ticker, position),
+                autocomplete='add_commit {0}'.format(ticker),
                 icon=ICON_INFO,
             )
 
 
 def add_favorites(wf, ticker, position_str=None):
-    # type: (Workflow3, unicode, Optional[unicode]) -> ()  # noqa
+    # type: (Workflow3, str, Optional[str]) -> ()  # noqa
 
     ticker = ticker.upper()
-    favorites = wf.settings['favorites']  # type: list[unicode]  # noqa
+    favorites = wf.settings['favorites']  # type: list[str]  # noqa
 
     position = int(position_str) if position_str else None
     if position:
@@ -346,10 +383,10 @@ def add_favorites(wf, ticker, position_str=None):
 
 
 def remove_favorites(wf, ticker):
-    # type: (Workflow3, unicode) -> ()  # noqa
+    # type: (Workflow3, str) -> ()  # noqa
 
     ticker = ticker.upper()
-    favorites = wf.settings['favorites']  # type: list[unicode]  # noqa
+    favorites = wf.settings['favorites']  # type: list[str]  # noqa
 
     if ticker in favorites:
         favorites.remove(ticker)
@@ -365,7 +402,7 @@ def remove_favorites(wf, ticker):
 
 
 def set_currency(wf, fiat):
-    # type: (Workflow3, Optional[unicode]) -> ()  # noqa
+    # type: (Workflow3, Optional[str]) -> ()  # noqa
     if not fiat:
         wf.warn_empty(
             title='Set currency',
@@ -377,8 +414,10 @@ def set_currency(wf, fiat):
         fiat = fiat.upper()
 
         if len(fiat) != 3:
-            wf.warn_empty(title="'{0}' is invalid currency.".format(fiat),
-                          icon=ICON_ERROR)
+            wf.warn_empty(
+                title="'{0}' is invalid currency.".format(fiat),
+                icon=ICON_ERROR,
+            )
         else:
             wf.settings['currency'] = fiat
             wf.add_item(
@@ -499,10 +538,12 @@ def main(wf):
                 show_default_items = True
 
     if wf.update_available:
-        wf.add_item('New version is available',
-                    subtitle='Click to install the update',
-                    autocomplete='workflow:update',
-                    icon=ICON_INFO)
+        wf.add_item(
+            'New version is available',
+            subtitle='Click to install the update',
+            autocomplete='workflow:update',
+            icon=ICON_INFO,
+        )
 
     if show_default_items:
         add_default_item(wf)

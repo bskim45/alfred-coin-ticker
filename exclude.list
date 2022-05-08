@@ -1,0 +1,11 @@
+*.pyc
+*.log
+*.acorn
+*.swp
+*.bak
+*.sublime-project
+*.sublime-workflow
+*.git
+*.dist-info
+*.egg-info
+*__pycache__*

@@ -9,7 +9,20 @@
 An [Alfred Workflow](http://www.alfredapp.com/) that provides the current price
 and status about cryptocurrency from [cryptocompare.com].
 
-Supports Alfred 3 and Alfred 4 on macOS 10.7+ (Python 2.7).
+Supports Alfred 4 on macOS 12.3+ (Python 3.8+).
+
+## ⚠️ Using this workflow on macOS 12.3+ Monterey
+[2.0.0](https://github.com/bskim45/alfred-coin-ticker/releases/tag/2.0.0)
+is the first version that supports macOS 12.3+ (Python 3.8+).
+Please upgrade your workflow version to 2.0.0 or later
+if you are using macOS 12.3+.
+
+Feel free to open issues for any troubles regarding this change.
+
+## ⚠️ Note to macOS 12.2 or below users
+[1.1.0](https://github.com/bskim45/alfred-coin-ticker/releases/tag/1.1.0)
+is the last version that supports macOS 12.2 and below (Python 2).
+Please do not upgrade to 2.x version if you are using macOS 12.2 or below.
 
 ## Install
 
@@ -52,9 +65,13 @@ Please use with caution.
 
 The code is released under the MIT license. See [LICENSE](LICENSE) for details.
 
-Awesome [alfred-workflow](https://github.com/deanishe/alfred-workflow) library
-by [@deanishe](https://github.com/deanishe) is also released under
+Awesome [alfred-workflow](https://github.com/NorthIsUp/alfred-workflow-py3)
+library by [@NorthIsUp](https://github.com/NorthIsUp) is also released under
 [MIT License](alfred-workflow/LICENCE.txt).
+
+[alfred-workflow](https://github.com/NorthIsUp/alfred-workflow) is
+originally created by [@deanishe](https://github.com/deanishe)
+and ported to Python 3 by  [@NorthIsUp](https://github.com/NorthIsUp).
 
 [cryptocompare.com]: https://www.cryptocompare.com/
 [latest release]: https://github.com/bskim45/alfred-coin-ticker/releases/latest/download/alfred-coin-ticker.alfredworkflow

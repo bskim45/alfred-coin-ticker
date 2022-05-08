@@ -1,34 +1,35 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 #
 # Copyright (c) 2022 Bumsoo Kim <bskim45@gmail.com>
 #
 # MIT Licence http://opensource.org/licenses/MIT
 
-from __future__ import print_function, unicode_literals
+from __future__ import annotations
 
 import os
 from collections import namedtuple
 
+import requests as requests
+
 from utils import clean_price_string
-from workflow import web
 
 
 class CoinTick(object):
     def __init__(
         self,
-        ticker,  # type: unicode
-        symbol,  # type: unicode
-        image_url,  # type: unicode
-        fiat,  # type: unicode
-        fiat_symbol,  # type: unicode
-        price,  # type: unicode
-        price_24h_high,  # type: unicode
-        price_24h_low,  # type: unicode
-        price_change_24h,  # type: unicode
-        price_change_24h_percent,  # type: unicode
-        total_volume_24h,  # type: unicode
-        total_volume_24h_fiat,  # type: unicode
+        ticker,  # type: str
+        symbol,  # type: str
+        image_url,  # type: str
+        fiat,  # type: str
+        fiat_symbol,  # type: str
+        price,  # type: str
+        price_24h_high,  # type: str
+        price_24h_low,  # type: str
+        price_change_24h,  # type: str
+        price_change_24h_percent,  # type: str
+        total_volume_24h,  # type: str
+        total_volume_24h_fiat,  # type: str
     ):
         self.ticker = ticker
         self.symbol = symbol
@@ -47,32 +48,31 @@ class CoinTick(object):
         if not isinstance(o, CoinTick):
             return False
 
-        return all((
-            self.ticker == o.ticker,
-            self.symbol == o.symbol,
-            self.image_url == o.image_url,
-            self.fiat == o.fiat,
-            self.fiat_symbol == o.fiat_symbol,
-            self.price == o.price,
-            self.price_24h_high == o.price_24h_high,
-            self.price_24h_low == o.price_24h_low,
-            self.price_change_24h == o.price_change_24h,
-            self.price_change_24h_percent == o.price_change_24h_percent,
-            self.total_volume_24h == o.total_volume_24h,
-            self.total_volume_24h_fiat == o.total_volume_24h_fiat,
-        ))
-
-    def __unicode__(self):
-        return '{0} {1} ({2}{3})'.format(
-            self.symbol, self.ticker, self.fiat_symbol, self.price)
+        return all(
+            (
+                self.ticker == o.ticker,
+                self.symbol == o.symbol,
+                self.image_url == o.image_url,
+                self.fiat == o.fiat,
+                self.fiat_symbol == o.fiat_symbol,
+                self.price == o.price,
+                self.price_24h_high == o.price_24h_high,
+                self.price_24h_low == o.price_24h_low,
+                self.price_change_24h == o.price_change_24h,
+                self.price_change_24h_percent == o.price_change_24h_percent,
+                self.total_volume_24h == o.total_volume_24h,
+                self.total_volume_24h_fiat == o.total_volume_24h_fiat,
+            )
+        )
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
+        return '{0} {1} ({2}{3})'.format(
+            self.symbol, self.ticker, self.fiat_symbol, self.price
+        )
 
 
 CoinInfo = namedtuple(
-    'CoinInfo',
-    ['name', 'ticker', 'symbol', 'image_url', 'url']
+    'CoinInfo', ['name', 'ticker', 'symbol', 'image_url', 'url']
 )
 
 
@@ -84,31 +84,30 @@ class TickClient(object):
 
     @classmethod
     def get_cache_key(cls, query=None):
-        return '{0}-{1}'.format(cls.CACHE_KEY, query) \
-            .replace(os.sep, '_')
+        return '{0}-{1}'.format(cls.CACHE_KEY, query).replace(os.sep, '_')
 
     def get(self, path, params):
-        # type: (unicode, dict) -> dict
-        r = web.get(self.API_BASE_URL + path, params)
+        # type: (str, dict) -> dict
+        r = requests.get(self.API_BASE_URL + path, params)
         r.raise_for_status()
 
         result = r.json()
         return result
 
     def get_coin_prices(self, tickers, fiat):
-        # type: (list[unicode], unicode) -> list[CoinTick]  # noqa
+        # type: (list[str], str) -> list[CoinTick]  # noqa
         raise NotImplementedError()
 
     def get_top_market_cap(self, limit, fiat):
-        # type: (int, unicode) -> list[CoinTick]  # noqa
+        # type: (int, str) -> list[CoinTick]  # noqa
         raise NotImplementedError()
 
     def get_coin_info(self, ticker):
-        # type: (unicode) -> CoinInfo  # noqa
+        # type: (str) -> CoinInfo  # noqa
         raise NotImplementedError()
 
     def get_ticker_web_url(self, ticker, fiat):
-        # type: (unicode, unicode) -> unicode
+        # type: (str, str) -> str
         raise NotImplementedError()
 
 
@@ -168,9 +167,11 @@ class CryptoCompareClient(TickClient):
     def coin_info_from_api_repr(cls, data):
         # type: (dict) -> CoinInfo
         return CoinInfo(
-            data['CoinName'], data['Symbol'], None,
+            data['CoinName'],
+            data['Symbol'],
+            None,
             cls.WEB_BASE_URL + data['ImageUrl'],
-            cls.WEB_BASE_URL + data['Url']
+            cls.WEB_BASE_URL + data['Url'],
         )
 
     @classmethod
@@ -183,9 +184,11 @@ class CryptoCompareClient(TickClient):
         fiat_symbol = display.get('TOSYMBOL')
 
         return CoinTick(
-            ticker, symbol,
+            ticker,
+            symbol,
             cls.WEB_BASE_URL + display.get('IMAGEURL'),
-            fiat, fiat_symbol,
+            fiat,
+            fiat_symbol,
             clean_price_string(fiat_symbol, display.get('PRICE')),
             clean_price_string(fiat_symbol, display.get('HIGH24HOUR')),
             clean_price_string(fiat_symbol, display.get('LOW24HOUR')),
@@ -222,5 +225,5 @@ class CoinMarketCapClient(TickClient):
 
     @staticmethod
     def normalize_to_underscore(name):
-        # type: (unicode) -> unicode
+        # type: (str) -> str
         return name.replace('.', '-').replace(' ', '-')

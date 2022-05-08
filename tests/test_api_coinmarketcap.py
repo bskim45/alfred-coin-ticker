@@ -5,7 +5,7 @@
 #
 # MIT Licence http://opensource.org/licenses/MIT
 
-from __future__ import print_function, unicode_literals
+from __future__ import annotations
 
 from unittest import TestCase
 

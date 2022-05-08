@@ -5,14 +5,14 @@
 #
 # MIT Licence http://opensource.org/licenses/MIT
 
-from __future__ import print_function, unicode_literals
+from __future__ import annotations
 
 import json
 from unittest import TestCase
 
 import mock
 
-from api import CryptoCompareClient, CoinTick, CoinInfo
+from api import CoinInfo, CoinTick, CryptoCompareClient
 
 
 def _load_example(path):
@@ -24,12 +24,15 @@ def _load_example(path):
 
 class CryptoCompareClientTest(TestCase):
     def setUp(self):
-        self.example_market_cap = \
-            _load_example('examples/cryptocompare/mktcapfull_10.json')
-        self.example_tick_prices_btc_eth = \
-            _load_example('examples/cryptocompare/pricemultifull_btceth.json')
-        self.example_coinlist_eth = \
-            _load_example('examples/cryptocompare/coinlist_eth.json')
+        self.example_market_cap = _load_example(
+            'examples/cryptocompare/mktcapfull_10.json'
+        )
+        self.example_tick_prices_btc_eth = _load_example(
+            'examples/cryptocompare/pricemultifull_btceth.json'
+        )
+        self.example_coinlist_eth = _load_example(
+            'examples/cryptocompare/coinlist_eth.json'
+        )
 
     @mock.patch('api.web.get', autospec=True)
     def test_get_tick_prices(
@@ -47,21 +50,33 @@ class CryptoCompareClientTest(TestCase):
 
         expected = [
             CoinTick(
-                'BTC', 'Ƀ',
+                'BTC',
+                'Ƀ',
                 'https://www.cryptocompare.com/media/37746251/btc.png',
-                'USD', '$',
-                '43,022.2', '43,355.5', '41,761.2',
-                '-253.25', '-0.59',
-                '158.53 K', '6.81 B',
+                'USD',
+                '$',
+                '43,022.2',
+                '43,355.5',
+                '41,761.2',
+                '-253.25',
+                '-0.59',
+                '158.53 K',
+                '6.81 B',
             ),
             CoinTick(
-                'ETH', 'Ξ',
+                'ETH',
+                'Ξ',
                 'https://www.cryptocompare.com/media/37746238/eth.png',
-                'USD', '$',
-                '3,271.17', '3,313.47', '3,189.17',
-                '-31.25', '-0.95',
-                '1.37 M', '4.49 B',
-            )
+                'USD',
+                '$',
+                '3,271.17',
+                '3,313.47',
+                '3,189.17',
+                '-31.25',
+                '-0.95',
+                '1.37 M',
+                '4.49 B',
+            ),
         ]
 
         self.assertListEqual(res, expected)
@@ -93,8 +108,10 @@ class CryptoCompareClientTest(TestCase):
         res = api.get_coin_info('ETH')
 
         expected = CoinInfo(
-            'Ethereum', 'ETH', None,
+            'Ethereum',
+            'ETH',
+            None,
             'https://www.cryptocompare.com/media/37746238/eth.png',
-            'https://www.cryptocompare.com/coins/eth/overview'
+            'https://www.cryptocompare.com/coins/eth/overview',
         )
         self.assertEqual(res, expected)

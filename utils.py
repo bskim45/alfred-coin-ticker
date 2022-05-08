@@ -1,11 +1,11 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # encoding: utf-8
 #
 # Copyright (c) 2022 Bumsoo Kim <bskim45@gmail.com>
 #
 # MIT Licence http://opensource.org/licenses/MIT
 
-from __future__ import print_function, unicode_literals
+from __future__ import annotations
 
 import os
 import time
@@ -20,21 +20,29 @@ def create_workflow():
         default_settings={
             'currency': 'USD',
             'favorites': [
-                'BTC', 'ETH', 'BNB', 'SOL', 'ADA',
-                'XRP', 'LUNA', 'AVAX', 'MATIC',
+                'BTC',
+                'ETH',
+                'BNB',
+                'SOL',
+                'ADA',
+                'XRP',
+                'LUNA',
+                'AVAX',
+                'MATIC',
             ],
         },
         update_settings={
             'github_slug': 'bskim45/alfred-coin-ticker',
             'frequency': 7,  # once a week
-        })
+        },
+    )
 
     wf.settings.save()
     return wf
 
 
 def clean_price_string(symbol, price_str):
-    # type: (unicode, unicode) -> unicode
+    # type: (str, str) -> str
     if not symbol or not price_str:
         return price_str
 
@@ -42,7 +50,7 @@ def clean_price_string(symbol, price_str):
 
 
 def get_display_change_string(change_str):
-    # type: (unicode) -> unicode
+    # type: (str) -> str
     if not change_str.startswith('-') and not change_str.startswith('+'):
         return '📈' + change_str
     elif change_str.startswith('+'):
@@ -57,7 +65,7 @@ def cached_file_age(wf, name):
     if not os.path.exists(cache_path):
         return 0
 
-    return time.time() - os.stat(cache_path).st_mtime
+    return int(time.time() - os.stat(cache_path).st_mtime)
 
 
 def cached_file_fresh(wf, name, max_age):

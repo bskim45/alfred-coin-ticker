@@ -13,7 +13,7 @@
     }
   ],
   "scripts": {
-    "postbump": "sed -i.bak \"s#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(cat version)</string>#\" info.plist",
+    "postbump": "poetry version $(cat version) && sed -i.bak \"s#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(cat version)</string>#\" info.plist",
     "precommit": "git add info.plist"
 
   }

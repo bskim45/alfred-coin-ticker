@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/bskim45/alfred-coin-ticker/compare/2.0.0...2.1.0) (2025-01-15)
+
 ## [2.0.0](https://github.com/bskim45/alfred-coin-ticker/compare/1.1.0...2.0.0) (2022-05-08)
 
 ### Breaking changes

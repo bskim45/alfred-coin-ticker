@@ -1,8 +1,16 @@
 # Changelog
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
-## [2.1.0](https://github.com/bskim45/alfred-coin-ticker/compare/2.0.0...2.1.0) (2025-01-15)
+## [2.2.0](https://github.com/bskim45/alfred-coin-ticker/compare/2.1.0...2.2.0) (2025-01-16)
+
+
+## [2.1.0](https://github.com/bskim45/alfred-coin-ticker/compare/2.0.0...2.1.0) (2025-01-16)
+
+NOTE: This version is not released. Please use 2.2.0 instead.
+
+* update default coin list ([17c98d4](https://github.com/bskim45/alfred-coin-ticker/commit/17c98d4b40a6f9a2c9ee92968ab8b574344b5713))
+
 
 ## [2.0.0](https://github.com/bskim45/alfred-coin-ticker/compare/1.1.0...2.0.0) (2022-05-08)
 

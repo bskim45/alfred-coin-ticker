@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "alfred-coin-ticker"
-version = "2.0.0"
+version = "2.1.0"
 description = ""
 authors = ["Bumsoo Kim <bskim45@gmail.com>"]
 license = "MIT"
@@ -10,7 +10,7 @@ python = "~3.8"
 requests = "^2.27.1"
 alfred-workflow = {git = "https://github.com/NorthIsUp/alfred-workflow-py3", rev = "master"}
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 mock = "~3.0.5"
 
 [build-system]

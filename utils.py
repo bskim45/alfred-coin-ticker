@@ -22,13 +22,14 @@ def create_workflow():
             'favorites': [
                 'BTC',
                 'ETH',
+                'XRP',
                 'BNB',
                 'SOL',
+                'DOGE',
                 'ADA',
-                'XRP',
-                'LUNA',
+                'TRX',
                 'AVAX',
-                'MATIC',
+                'XLM',
             ],
         },
         update_settings={

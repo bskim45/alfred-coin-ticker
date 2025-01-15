@@ -8,6 +8,10 @@ PYTHON := /usr/bin/python3
 
 default: clean build
 
+.PHONY: install-tools
+install-tools:
+	npm install -g commit-and-tag-version
+
 .PHONY: .venv
 .venv:
 	poetry env use $(PYTHON)
@@ -60,24 +64,30 @@ bump_version:
 	@echo Current version: $(shell cat $(VERSION_FILE))
 	@(read -e -p "Bump to version $(version)? [y/N]: " ans && case "$$ans" in [yY]) true;; *) false;; esac)
 	@echo $(version) > version
-	@potry version $(version)
+	@poetry version $(version)
 	@sed -i.bak 's#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(version)</string>#' info.plist
 
 .PHONY: release
 release:
-	@standard-version -a -s -t ""
+	@commit-and-tag-version -a -s
 
 .PHONY: release-major
 release-major:
-	@standard-version -a -s -t "" --release-as major
+	@commit-and-tag-version -a -s --release-as major
 
 .PHONY: release-minor
 release-minor:
-	@standard-version -a -s -t "" --release-as minor
+	@commit-and-tag-version -a -s --release-as minor
 
 .PHONY: release-patch
 release-patch:
-	@standard-version -a -s -t "" --release-as patch
+	@commit-and-tag-version -a -s --release-as patch
+
+.PHONY: release-github
+release-github: VERSION=$(shell cat $(VERSION_FILE))
+release-github:
+	@(read -e -p "Create Github release version $(VERSION)? [y/N]: " ans && case "$$ans" in [yY]) true;; *) false;; esac)
+	gh release create $(VERSION) $(WORKFLOW_FILENAME)
 
 EXECUTABLES = $(PYTHON) plutil open rsync poetry
 K := $(foreach exec,$(EXECUTABLES),\

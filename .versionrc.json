@@ -4,17 +4,22 @@
     {
       "filename": "version",
       "type": "plain-text"
+    },
+    {
+      "filename": "pyproject.toml",
+      "type": "python"
     }
   ],
   "packageFiles": [
     {
-      "filename": "package.json",
-      "type": "json"
+      "filename": "pyproject.toml",
+      "type": "python"
     }
   ],
   "scripts": {
-    "postbump": "poetry version $(cat version) && sed -i.bak \"s#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(cat version)</string>#\" info.plist",
+    "postbump": "sed -i.bak \"s#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(cat version)</string>#\" info.plist",
     "precommit": "git add info.plist"
 
-  }
+  },
+  "tagPrefix": ""
 }

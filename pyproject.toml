@@ -6,7 +6,7 @@ authors = ["Bumsoo Kim <bskim45@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "~3.8"
+python = ">= 3.8, < 3.10"
 requests = "^2.27.1"
 alfred-workflow = {git = "https://github.com/NorthIsUp/alfred-workflow-py3", rev = "master"}
 

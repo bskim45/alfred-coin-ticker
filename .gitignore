@@ -58,9 +58,6 @@ venv.bak/
 .vscode
 .idea
 
-# poetry
-/poetry.toml
-
 # user
 /link.sh
 /info.plist.bak

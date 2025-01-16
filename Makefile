@@ -14,14 +14,13 @@ install-tools:
 
 .PHONY: .venv
 .venv:
-	poetry env use $(PYTHON)
-	poetry install
+	uv sync --python $(PYTHON)
 
 .PHONY: build
 build: $(WORKFLOW_FILENAME)
 
 requirements.txt:
-	poetry export --without-hashes > requirements.txt
+	uv pip compile pyproject.toml -o requirements.txt
 
 %/.site-packages:
 	$(PYTHON) -m pip install \
@@ -64,7 +63,6 @@ bump_version:
 	@echo Current version: $(shell cat $(VERSION_FILE))
 	@(read -e -p "Bump to version $(version)? [y/N]: " ans && case "$$ans" in [yY]) true;; *) false;; esac)
 	@echo $(version) > version
-	@poetry version $(version)
 	@sed -i.bak 's#<string>[0-9]*.[0-9]*.[0-9]*</string>#<string>$(version)</string>#' info.plist
 
 .PHONY: release
@@ -89,6 +87,6 @@ release-github:
 	@(read -e -p "Create Github release version $(VERSION)? [y/N]: " ans && case "$$ans" in [yY]) true;; *) false;; esac)
 	gh release create $(VERSION) $(WORKFLOW_FILENAME)
 
-EXECUTABLES = $(PYTHON) plutil open rsync poetry
+EXECUTABLES = $(PYTHON) plutil open rsync uv
 K := $(foreach exec,$(EXECUTABLES),\
         $(if $(shell which $(exec)),some string,$(error "No $(exec) in PATH")))

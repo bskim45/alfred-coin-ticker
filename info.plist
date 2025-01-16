@@ -160,7 +160,37 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>**Coin Ticker for Alfred Workflow** is an [Alfred Workflow](https://www.alfredapp.com/) that provides the current price
+and status about cryptocurrency from [cryptocompare.com](https://www.cryptocompare.com/).
+
+Supports Alfred 4 on macOS 12.3+ (Python 3.8+).
+
+## Usage
+
+Simply type `coin` to get the current price of favorite coins.
+
+![](https://raw.githubusercontent.com/bskim45/alfred-coin-ticker/main/docs/screenshot_coin.png)
+
+`coin list` shows the current price of the top 10 coins by market cap.
+
+- Press `Enter ⏎` to open associated `coinmarketcap.com` website.
+- Press `⌘ ⏎` to copy the current price to the clipboard.
+- Press `⌥ ⏎` to copy current ticker (ex. `BTC`) to the clipboard.
+
+`coin [TICKER]` shows the current price of the coin with that ticker.
+
+`coin add [TICKER] [POSITION(optional)]` adds new coin to the favorites.
+Position starts from 1.
+
+`coin remove [TICKER]` removes a coin from the favorites.
+
+`coin set currency [CURRENCY]` sets the fiat currency (3 letters).
+
+`coin reset` resets all settings to default and deletes all caches/saved data.
+Please use with caution.
+
+`coin help` shows all available commands.
+</string>
 	<key>uidata</key>
 	<dict>
 		<key>6AF5FC12-666E-49EE-BE20-57E3FC698CDB</key>

@@ -12,7 +12,10 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["mock~=3.0.5"]
+dev = [
+    "mock~=3.0.5",
+    "ruff>=0.12.0",
+]
 
 [tool.uv.sources]
 alfred-workflow = { git = "https://github.com/NorthIsUp/alfred-workflow-py3", rev = "master" }
@@ -24,6 +27,25 @@ build-backend = "hatchling.build"
 [tool.uv]
 package = false
 python-preference = "only-system"
+
+[tool.ruff]
+line-length = 79
+indent-width = 4
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+extend-select = [
+  # https://docs.astral.sh/ruff/rules/
+  "E501", # line-too-long,
+  "I", # isort
+  "B", # flake8-bugbear
+]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.isort]
+known-first-party = ["utils"]
 
 [tool.isort]
 profile = "black"

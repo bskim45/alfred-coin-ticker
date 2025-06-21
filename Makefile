@@ -2,6 +2,7 @@ NAME := alfred-coin-ticker
 WORKFLOW_FILENAME := $(NAME).alfredworkflow
 VERSION_FILE := version
 TARGET_FILES := $(shell cat include.list)
+VENV := ./.venv/bin
 
 # must use system python
 PYTHON := /usr/bin/python3
@@ -42,6 +43,22 @@ $(WORKFLOW_FILENAME): deps
 .PHONY: test
 test:
 	python -m unittest discover -s tests -v
+
+.PHONY: lint
+lint:
+	$(VENV)/ruff check tests api.py main.py utils.py
+
+.PHONY: lint-fix
+lint-fix:
+	$(VENV)/ruff check --fix tests api.py main.py utils.py
+
+.PHONY: format
+format:
+# sort imports
+	$(VENV)/ruff check --select I --fix tests api.py main.py utils.py
+# format code
+	$(VENV)/ruff format --diff tests api.py main.py utils.py || true
+	$(VENV)/ruff format tests api.py main.py utils.py
 
 install: $(WORKFLOW_FILENAME)
 	open $(WORKFLOW_FILENAME)
